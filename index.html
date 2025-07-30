@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Attendance</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 35px 45px;
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h2 { color: #333; margin-bottom: 25px; }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    textarea { resize: vertical; }
+
+    button {
+      background: #6c63ff;
+      color: white;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover { background: #4e47d7; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Student Attendance Form</h2>
+    <form id="attendanceForm">
+      <input type="text" name="student_name" placeholder="Student Name" required />
+      <input type="text" name="student_id" placeholder="Student ID" required />
+      <select name="department" required>
+        <option value="" disabled selected>Select Department</option>
+        <option>CSE</option>
+        <option>ECE</option>
+        <option>AI&DS</option>
+        <option>MECH</option>
+        <option>CIVIL</option>
+      </select>
+      <input type="date" name="date" required />
+      <select name="subject" required>
+        <option value="" disabled selected>Select Subject</option>
+        <option>Maths</option>
+        <option>Physics</option>
+        <option>Chemistry</option>
+        <option>Python</option>
+        <option>Java</option>
+      </select>
+      <textarea name="comments" rows="3" placeholder="Additional Comments (optional)"></textarea>
+      <button type="submit">Submit Attendance</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('attendanceForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+
+      const data = {
+        student_name: form.student_name.value,
+        student_id: form.student_id.value,
+        department: form.department.value,
+        date: form.date.value,
+        subject: form.subject.value,
+        comments: form.comments.value
+      };
+
+      const res = await fetch('/submit', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+
+      const text = await res.text();
+      alert(text);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
